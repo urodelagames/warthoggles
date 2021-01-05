@@ -1,0 +1,256 @@
+[gd_scene load_steps=17 format=2]
+
+[ext_resource path="res://Scenes/Warthog.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scripts/Scene0.gd" type="Script" id=2]
+[ext_resource path="res://Scripts/Goal.gd" type="Script" id=3]
+
+[sub_resource type="CubeMesh" id=5]
+
+[sub_resource type="SpatialMaterial" id=6]
+albedo_color = Color( 0.372549, 0.478431, 0.298039, 1 )
+
+[sub_resource type="BoxShape" id=2]
+
+[sub_resource type="PhysicsMaterial" id=14]
+friction = 0.25
+bounce = 1.0
+
+[sub_resource type="SphereShape" id=7]
+
+[sub_resource type="SphereMesh" id=8]
+
+[sub_resource type="BoxShape" id=9]
+
+[sub_resource type="CubeMesh" id=10]
+
+[sub_resource type="BoxShape" id=11]
+
+[sub_resource type="SpatialMaterial" id=15]
+
+[sub_resource type="SpatialMaterial" id=16]
+
+[sub_resource type="ParticlesMaterial" id=13]
+lifetime_randomness = 0.09
+emission_shape = 2
+emission_box_extents = Vector3( 0, 0, 10 )
+spread = 69.83
+flatness = 0.17
+initial_velocity = 10.0
+angular_velocity = 165.52
+angular_velocity_random = 0.14
+color = Color( 0.772549, 0.572549, 0.356863, 1 )
+hue_variation = 0.23
+hue_variation_random = 1.0
+
+[sub_resource type="SphereMesh" id=12]
+
+[node name="Scene0" type="Spatial"]
+script = ExtResource( 2 )
+
+[node name="Warthog" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 2, 0 )
+color = Color( 0.905882, 0.839216, 0.486275, 1 )
+
+[node name="Camera2" type="Camera" parent="Warthog"]
+transform = Transform( -1.50037e-07, -0.389751, 0.92092, -6.34985e-08, 0.92092, 0.389751, -1, 3.55271e-15, -1.62921e-07, 1.67433, 3.0239, 0.397014 )
+current = true
+
+[node name="Ground" type="MeshInstance" parent="."]
+transform = Transform( 20.28, 0, 0, 0, 1, 0, 0, 0, 19, 0, 0, 0 )
+mesh = SubResource( 5 )
+material/0 = SubResource( 6 )
+
+[node name="StaticBody" type="StaticBody" parent="Ground"]
+transform = Transform( 0.0493096, 0, 0, 0, 1, 0, 0, 0, 0.0526316, 0, 2.39062, 0 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Ground/StaticBody"]
+transform = Transform( 19.5889, 0, 0, 0, 1.1, 0, 0, 0, 22.1896, 0, -2.54253, 0 )
+shape = SubResource( 2 )
+
+[node name="Ball" type="RigidBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.42646, 0 )
+physics_material_override = SubResource( 14 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Ball"]
+shape = SubResource( 7 )
+
+[node name="Obstacle0" type="MeshInstance" parent="Ball"]
+mesh = SubResource( 8 )
+material/0 = null
+
+[node name="OmniLight" type="OmniLight" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12.3082, 0 )
+shadow_enabled = true
+omni_range = 22.2256
+
+[node name="Wall" type="StaticBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 3.46944, 0, 0, 0, 19.8047, -17.9039, 2.27248, 0 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Wall"]
+shape = SubResource( 9 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Wall"]
+mesh = SubResource( 10 )
+material/0 = null
+
+[node name="Wall5" type="StaticBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 3.46944, 0, 0, 0, 19.8047, -17.9039, 9.20688, 0 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Wall5"]
+shape = SubResource( 9 )
+
+[node name="Wall6" type="StaticBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 3.46944, 0, 0, 0, 19.8047, 19.9385, 9.20688, 0 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Wall6"]
+shape = SubResource( 9 )
+
+[node name="Wall7" type="StaticBody" parent="."]
+transform = Transform( -1.62921e-07, 0, 19.8047, 0, 3.46944, 0, -1, 0, -3.22659e-06, 0.837242, 9.20688, 20.2161 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Wall7"]
+shape = SubResource( 9 )
+
+[node name="Wall8" type="StaticBody" parent="."]
+transform = Transform( -1.62921e-07, 0, 19.8047, 0, 3.46944, 0, -1, 0, -3.22659e-06, 0.837242, 9.20688, -21.2917 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Wall8"]
+shape = SubResource( 9 )
+
+[node name="Ceiling" type="StaticBody" parent="."]
+transform = Transform( 2.65431e-14, 5.65244e-07, 19.8047, 1, -5.65244e-07, 0, 1.02621e-06, 21.8535, -2.03238e-05, 0.837242, 13.2467, 0.836031 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Ceiling"]
+shape = SubResource( 9 )
+
+[node name="Wall4" type="StaticBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 3.24795, 0, 0, 0, 19.8047, 19.9948, 2.27248, 0 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Wall4"]
+shape = SubResource( 9 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Wall4"]
+mesh = SubResource( 10 )
+material/0 = null
+
+[node name="Wall2" type="StaticBody" parent="."]
+transform = Transform( 0.00698115, 0, -19.8042, 0, 3.26608, 0, 0.999976, 0, 0.13826, 0.636957, 2.27248, 19.5456 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Wall2"]
+shape = SubResource( 9 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Wall2"]
+mesh = SubResource( 10 )
+material/0 = null
+
+[node name="Wall3" type="StaticBody" parent="."]
+transform = Transform( 0.00698115, 0, -19.8042, 0, 3.39157, 0, 0.999976, 0, 0.13826, 0.636957, 2.27248, -20.0592 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Wall3"]
+shape = SubResource( 9 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Wall3"]
+mesh = SubResource( 10 )
+material/0 = null
+
+[node name="Goal" type="Area" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15.4312, 3.77028, 0 )
+script = ExtResource( 3 )
+goal_color = Color( 0.356863, 0.372549, 0.811765, 1 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Goal"]
+transform = Transform( 0.375348, 0, 0, 0, 1.45014, 0, 0, 0, 2.67597, 0, -0.699463, 0 )
+shape = SubResource( 11 )
+
+[node name="Wall5" type="StaticBody" parent="Goal"]
+transform = Transform( -2.26671e-07, -1.39133, 7.03409e-07, 0, -1.17105e-07, -2.23049, 0.40765, -6.64162e-08, 3.35778e-14, 0.655056, -0.472408, 3.37033 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Goal/Wall5"]
+shape = SubResource( 9 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Goal/Wall5"]
+mesh = SubResource( 10 )
+material/0 = SubResource( 15 )
+
+[node name="Wall6" type="StaticBody" parent="Goal"]
+transform = Transform( -2.26671e-07, -1.39133, 7.03409e-07, 0, -1.17105e-07, -2.23049, 0.40765, -6.64162e-08, 3.35778e-14, 0.655056, -0.472408, -3.35714 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Goal/Wall6"]
+shape = SubResource( 9 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Goal/Wall6"]
+mesh = SubResource( 10 )
+material/0 = SubResource( 15 )
+
+[node name="Wall7" type="StaticBody" parent="Goal"]
+transform = Transform( -2.35053e-07, -1.44278, 7.29422e-07, -0.407642, 6.71364e-08, 0.0137421, -0.00424783, -1.97366e-07, -3.77241, 0.605558, 1.77147, 0.00448132 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Goal/Wall7"]
+shape = SubResource( 9 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Goal/Wall7"]
+mesh = SubResource( 10 )
+material/0 = SubResource( 16 )
+
+[node name="Particles" type="Particles" parent="Goal"]
+transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 2.69479, 0 )
+emitting = false
+amount = 25
+lifetime = 3.0
+one_shot = true
+speed_scale = 2.0
+explosiveness = 1.0
+process_material = SubResource( 13 )
+draw_pass_1 = SubResource( 12 )
+
+[node name="Goal2" type="Area" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 16.8861, 3.77028, 0 )
+script = ExtResource( 3 )
+goal_color = Color( 0.905882, 0.839216, 0.486275, 1 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Goal2"]
+transform = Transform( 0.375348, 0, 0, 0, 1.45014, 0, 0, 0, 2.67597, 0, -0.699463, 0 )
+shape = SubResource( 11 )
+
+[node name="Wall5" type="StaticBody" parent="Goal2"]
+transform = Transform( -2.26671e-07, -1.39133, 7.03409e-07, 0, -1.17105e-07, -2.23049, 0.40765, -6.64162e-08, 3.35778e-14, 0.655056, -0.472408, 3.37033 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Goal2/Wall5"]
+shape = SubResource( 9 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Goal2/Wall5"]
+mesh = SubResource( 10 )
+material/0 = SubResource( 15 )
+
+[node name="Wall6" type="StaticBody" parent="Goal2"]
+transform = Transform( -2.26671e-07, -1.39133, 7.03409e-07, 0, -1.17105e-07, -2.23049, 0.40765, -6.64162e-08, 3.35778e-14, 0.655056, -0.472408, -3.35714 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Goal2/Wall6"]
+shape = SubResource( 9 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Goal2/Wall6"]
+mesh = SubResource( 10 )
+material/0 = SubResource( 15 )
+
+[node name="Wall7" type="StaticBody" parent="Goal2"]
+transform = Transform( -2.35053e-07, -1.44278, 7.29422e-07, -0.407642, 6.71364e-08, 0.0137421, -0.00424783, -1.97366e-07, -3.77241, 0.605558, 1.77147, 0.00448132 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Goal2/Wall7"]
+shape = SubResource( 9 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Goal2/Wall7"]
+mesh = SubResource( 10 )
+material/0 = SubResource( 16 )
+
+[node name="Particles" type="Particles" parent="Goal2"]
+transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 2.69479, 0 )
+emitting = false
+amount = 25
+lifetime = 3.0
+one_shot = true
+speed_scale = 2.0
+explosiveness = 1.0
+process_material = SubResource( 13 )
+draw_pass_1 = SubResource( 12 )
+[connection signal="body_entered" from="Goal" to="Goal" method="_on_Goal_body_entered"]
+[connection signal="body_entered" from="Goal2" to="Goal2" method="_on_Goal_body_entered"]
