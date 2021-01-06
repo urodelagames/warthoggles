@@ -1,6 +1,5 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=17 format=2]
 
-[ext_resource path="res://Scenes/Warthog.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scripts/World.gd" type="Script" id=2]
 [ext_resource path="res://Scripts/Goal.gd" type="Script" id=3]
 [ext_resource path="res://Scripts/PlayerCamera.gd" type="Script" id=4]
@@ -251,14 +250,8 @@ draw_pass_1 = SubResource( 13 )
 transform = Transform( -1, 0, 3.25841e-07, 0, 1, 0, -3.25841e-07, 0, -1, 0, 5.39005, -18.3839 )
 current = true
 script = ExtResource( 4 )
-player_node = NodePath("../Warthog2")
 
-[node name="Warthog2" parent="." instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6.07874, 2, 0 )
-
-[node name="Orbit" type="Spatial" parent="Warthog2"]
-
-[node name="Follow" type="Spatial" parent="Warthog2"]
-transform = Transform( -1.50037e-07, -0.389751, 0.92092, -6.34985e-08, 0.92092, 0.389751, -1, 2.84217e-14, -1.62921e-07, 3.67916, 3.32076, 0.397014 )
+[node name="Spawn" type="Position3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.52156, -10.2635 )
 [connection signal="body_entered" from="Goal" to="Goal" method="_on_Goal_body_entered"]
 [connection signal="body_entered" from="Goal2" to="Goal2" method="_on_Goal_body_entered"]

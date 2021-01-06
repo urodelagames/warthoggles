@@ -16,10 +16,14 @@ var velocity = Vector3()
 var fall = Vector3() 
 onready var animation_player = get_node("WarthogModel/AnimationPlayer")
 
+puppet var puppet_position = null
+
 func _ready():
 	animation_player.get_animation('ArmatureAction').set_loop(true)
 	animation_player.play("ArmatureAction")
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	
+	set_process_input(is_network_master())
 	
 func set_color(new_color: Color) -> void:
 	$Armature/Skeleton/Plane.get_surface_material(0).albedo_color = new_color
@@ -50,27 +54,34 @@ func change_camera() -> void:
 		$Orbit.add_child(player_camera)
 
 func _physics_process(delta):
-	direction = Vector3()
-	
-	move_and_slide(fall, Vector3.UP)
-	
-	if not is_on_floor():
-		fall.y -= gravity
+	if is_network_master():
+		direction = Vector3()
+		
+		move_and_slide(fall, Vector3.UP)
+		
+		if not is_on_floor():
+			fall.y -= gravity
 
-	if Input.is_action_just_pressed("jump") and is_on_floor():
-		fall.y = jump
-	if Input.is_action_pressed("move_forward"):
-		direction -= transform.basis.x
-	elif Input.is_action_pressed("move_backward"):
-		direction += transform.basis.x
-	if Input.is_action_pressed("move_left"):
-		direction += transform.basis.z
-	elif Input.is_action_pressed("move_right"):
-		direction -= transform.basis.z
+		if Input.is_action_just_pressed("jump") and is_on_floor():
+			fall.y = jump
+		if Input.is_action_pressed("move_forward"):
+			direction -= transform.basis.x
+		elif Input.is_action_pressed("move_backward"):
+			direction += transform.basis.x
+		if Input.is_action_pressed("move_left"):
+			direction += transform.basis.z
+		elif Input.is_action_pressed("move_right"):
+			direction -= transform.basis.z
 
-	direction = direction.normalized()
-	velocity = velocity.linear_interpolate(direction * speed, acceleration * delta) 
-	velocity = move_and_slide(velocity, Vector3.UP)
+		direction = direction.normalized()
+		velocity = velocity.linear_interpolate(direction * speed, acceleration * delta) 
+		velocity = move_and_slide(velocity, Vector3.UP)
+		
+		# Change the transform of this node on all peers.
+		rset_unreliable('puppet_position', transform.origin)
+	else:
+		if puppet_position != null:
+			transform.origin = puppet_position
 
 func _on_SprintTimer_timeout():
 	sprinting = false

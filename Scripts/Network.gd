@@ -8,7 +8,7 @@ const DEFAULT_MAX_PLAYERS = 5
 const SERVER_ID = 1
 
 var players = {}
-var data = {name = '', position = Vector2(0,0)}
+var my_data = {'name': '', 'transform':Transform(Vector3.ZERO, Vector3.ZERO, Vector3.ZERO, Vector3.ZERO)}
 var network_connection_type = ''
 var ip = null
 
@@ -25,7 +25,7 @@ func _ready():
 	# Network signals.
 	get_tree().connect('network_peer_disconnected', self, '_on_player_disconnected')
 	get_tree().connect('network_peer_connected', self, '_on_player_connected')
-	get_tree().connect('connected_to_server', self, '_connected_to_server')
+	get_tree().connect('connected_to_server', self, '_on_connected_to_server')
 	
 	# Get arguments to check if this is the server before the server runs.
 	var args = parse_os_args()
@@ -36,16 +36,16 @@ func _ready():
 		
 # You're the server host and you create a server.
 func create_server(name):
-	data.name = name
+	my_data['name'] = name
 	var peer = NetworkedMultiplayerENet.new()
 	peer.create_server(DEFAULT_PORT, DEFAULT_MAX_PLAYERS)
 	get_tree().set_network_peer(peer)
 	
-	players[SERVER_ID] = data
+	players[SERVER_ID] = my_data
 
 # Called when local player clicks "join".
 func connect_to_server(player_nickname):
-	data.name = player_nickname
+	my_data['name'] = player_nickname
 	var peer = NetworkedMultiplayerENet.new()
 	
 	if ip:
@@ -55,11 +55,11 @@ func connect_to_server(player_nickname):
 		
 	get_tree().set_network_peer(peer)
 
-# Called when a client successfully connects to the server.
-func _connected_to_server():
-	var player_id = get_tree().get_network_unique_id()
-	players[player_id] = data
-	rpc('create_player', player_id, data) # Send all other clients (including server) to create this player on their screens.
+# Called when this client/player successfully connects to the server.
+func _on_connected_to_server():
+	var my_player_id = get_tree().get_network_unique_id()
+	players[my_player_id] = my_data
+	rpc('create_player', my_player_id, my_data) # Send all other clients (including server) to create this player on their screens.
 
 func _on_player_disconnected(id):
 	players.erase(id)
@@ -85,8 +85,11 @@ remote func create_player(player_id, data):
 	players[player_id] = data
 	var new_player = load('res://Scenes/Warthog.tscn').instance()
 	new_player.name = str(player_id)
+	print('create_player: ', str(player_id))
 	new_player.set_network_master(player_id) # Tell this puppet player that it's being controlled by some other peer.
-	get_node('/root/World/').add_child(new_player)
+	get_node('/root/World/Spawn').add_child(new_player)
+#	add_child(new_player)
+#	new_player.transform = data['transform']
 #	new_player.init(data['name'], data['position'])
 
 # func update_position(id, position):
