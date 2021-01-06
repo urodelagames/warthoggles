@@ -1,0 +1,71 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scripts/Lobby.gd" type="Script" id=1]
+
+[node name="Lobby" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ServerSection" type="HBoxContainer" parent="VBoxContainer"]
+margin_right = 548.0
+margin_bottom = 24.0
+
+[node name="Label" type="Label" parent="VBoxContainer/ServerSection"]
+margin_top = 5.0
+margin_right = 44.0
+margin_bottom = 19.0
+text = "Server:"
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/ServerSection"]
+margin_left = 48.0
+margin_right = 548.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 500, 0 )
+text = "127.0.0.1"
+
+[node name="NameSection" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 28.0
+margin_right = 548.0
+margin_bottom = 52.0
+
+[node name="Label" type="Label" parent="VBoxContainer/NameSection"]
+margin_top = 5.0
+margin_right = 42.0
+margin_bottom = 19.0
+text = "Name:"
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/NameSection"]
+margin_left = 46.0
+margin_right = 546.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 500, 0 )
+text = "Ronald McGuy"
+
+[node name="ButtonSection" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 56.0
+margin_right = 548.0
+margin_bottom = 76.0
+
+[node name="HostButton" type="Button" parent="VBoxContainer/ButtonSection"]
+margin_right = 42.0
+margin_bottom = 20.0
+text = "Host"
+
+[node name="JoinButton" type="Button" parent="VBoxContainer/ButtonSection"]
+margin_left = 46.0
+margin_right = 81.0
+margin_bottom = 20.0
+text = "Join"
+[connection signal="pressed" from="VBoxContainer/ButtonSection/HostButton" to="." method="_on_HostButton_pressed"]
+[connection signal="pressed" from="VBoxContainer/ButtonSection/JoinButton" to="." method="_on_JoinButton_pressed"]
