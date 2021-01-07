@@ -1,8 +1,7 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Scripts/World.gd" type="Script" id=2]
 [ext_resource path="res://Scripts/Goal.gd" type="Script" id=3]
-[ext_resource path="res://Scripts/PlayerCamera.gd" type="Script" id=4]
 
 [sub_resource type="CubeMesh" id=1]
 
@@ -11,14 +10,6 @@ albedo_color = Color( 0.372549, 0.478431, 0.298039, 1 )
 
 [sub_resource type="BoxShape" id=3]
 extents = Vector3( 1.12723, 1, 1 )
-
-[sub_resource type="PhysicsMaterial" id=4]
-friction = 0.25
-bounce = 1.0
-
-[sub_resource type="SphereShape" id=5]
-
-[sub_resource type="SphereMesh" id=6]
 
 [sub_resource type="BoxShape" id=7]
 
@@ -60,21 +51,13 @@ transform = Transform( 0.0493096, 0, 0, 0, 1, 0, 0, 0, 0.0526316, 0, 2.39062, 0 
 transform = Transform( 19.5889, 0, 0, 0, 1.1, 0, 0, 0, 22.1896, 0, -1.65258, 0 )
 shape = SubResource( 3 )
 
-[node name="Ball" type="RigidBody" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.42646, 0 )
-physics_material_override = SubResource( 4 )
-
-[node name="CollisionShape" type="CollisionShape" parent="Ball"]
-shape = SubResource( 5 )
-
-[node name="Obstacle0" type="MeshInstance" parent="Ball"]
-mesh = SubResource( 6 )
-material/0 = null
+[node name="BallSpawn" type="Position3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.18639, 0 )
 
 [node name="OmniLight" type="OmniLight" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12.3082, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11.7541, 0 )
 shadow_enabled = true
-omni_range = 22.2256
+omni_range = 23.9896
 
 [node name="Wall" type="StaticBody" parent="."]
 transform = Transform( 1, 0, 0, 0, 3.46944, 0, 0, 0, 19.8047, -17.9039, 2.27248, 0 )
@@ -245,11 +228,6 @@ speed_scale = 2.0
 explosiveness = 1.0
 process_material = SubResource( 12 )
 draw_pass_1 = SubResource( 13 )
-
-[node name="PlayerCamera" type="Camera" parent="."]
-transform = Transform( -1, 0, 3.25841e-07, 0, 1, 0, -3.25841e-07, 0, -1, 0, 5.39005, -18.3839 )
-current = true
-script = ExtResource( 4 )
 
 [node name="Spawn" type="Position3D" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.52156, -10.2635 )

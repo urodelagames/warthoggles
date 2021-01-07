@@ -4,7 +4,6 @@ export var color: Color = Color.black
 
 var speed = 7
 var sprint_speed = 14
-var sprinting: bool = false
 var acceleration = 10
 var gravity = 0.09
 var jump = 5
@@ -16,12 +15,12 @@ var velocity = Vector3()
 var fall = Vector3() 
 onready var animation_player = get_node("WarthogModel/AnimationPlayer")
 
-puppet var puppet_position = null
+puppet var puppet_transform = null
 
 func _ready():
 	animation_player.get_animation('ArmatureAction').set_loop(true)
 	animation_player.play("ArmatureAction")
-	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
 	set_process_input(is_network_master())
 	
@@ -29,7 +28,7 @@ func set_color(new_color: Color) -> void:
 	$Armature/Skeleton/Plane.get_surface_material(0).albedo_color = new_color
 	
 func _input(event):
-	if event is InputEventMouseMotion and not sprinting:
+	if event is InputEventMouseMotion:
 		rotate_y(deg2rad(-event.relative.x * mouse_sensitivity))
 	
 	if event.is_action_released('sprint'):
@@ -38,20 +37,6 @@ func _input(event):
 	elif event.is_action_pressed('sprint'):
 		speed = sprint_speed
 		animation_player.playback_speed = 4
-		
-#	if event.is_action_pressed('change_camera'):
-#		change_camera()
-
-func change_camera() -> void:
-	var player_camera = null
-	if $Orbit.has_node("PlayerCamera"):
-		player_camera = $Orbit/PlayerCamera
-		$Orbit.remove_child(player_camera)
-		$Follow.add_child(player_camera)
-	elif $Follow.has_node("PlayerCamera"):
-		player_camera = $Follow/PlayerCamera
-		$Follow.remove_child(player_camera)
-		$Orbit.add_child(player_camera)
 
 func _physics_process(delta):
 	if is_network_master():
@@ -78,11 +63,7 @@ func _physics_process(delta):
 		velocity = move_and_slide(velocity, Vector3.UP)
 		
 		# Change the transform of this node on all peers.
-		rset_unreliable('puppet_position', transform.origin)
+		rset_unreliable('puppet_transform', transform)
 	else:
-		if puppet_position != null:
-			transform.origin = puppet_position
-
-func _on_SprintTimer_timeout():
-	sprinting = false
-	speed = 7
+		if puppet_transform != null:
+			transform = puppet_transform
