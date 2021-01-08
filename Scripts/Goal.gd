@@ -19,5 +19,5 @@ func set_color(new_color: Color) -> void:
 
 
 func _on_Goal_body_entered(body):
-	if body.get_name() == 'Ball':
+	if body.is_in_group('Balls'):
 		$Particles.emitting = true

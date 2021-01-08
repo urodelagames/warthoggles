@@ -25,4 +25,3 @@ func _on_JoinButton_pressed():
 func _on_HostButton_pressed():
 	Network.ip = $VBoxContainer/ServerSection/LineEdit.get_text()
 	Network.create_server('David McServerhost', Network.ip)
-	get_tree().change_scene('res://Scenes/World.tscn')

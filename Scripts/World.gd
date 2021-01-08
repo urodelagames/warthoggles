@@ -33,7 +33,6 @@ func create_ball():
 	ball.name = 'McBall'
 	ball.set_network_master(get_tree().get_network_unique_id())
 	$BallSpawn.add_child(ball)
-	print('created ball_id serverside with ball_id ', str(ball_id))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):

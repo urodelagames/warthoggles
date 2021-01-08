@@ -36,7 +36,6 @@ func _ready():
 	
 	if network_connection_type == 'server':
 		create_server('David McServerhost', host_ip)
-		get_tree().change_scene('res://Scenes/World.tscn')
 		
 # You're the server host and you create a server.
 func create_server(name, ip):
@@ -46,6 +45,7 @@ func create_server(name, ip):
 	get_tree().set_network_peer(peer)
 	
 	players[SERVER_ID] = my_data
+	get_tree().change_scene('res://Scenes/World.tscn')
 
 # Called when local player clicks "join".
 func connect_to_server(player_nickname):
@@ -68,7 +68,10 @@ func _on_connected_to_server():
 	rpc_id(SERVER_ID, 'create_ball_for_id', my_player_id)
 
 func _on_player_disconnected(id):
-	players.erase(id)
+	if players.has(id):
+		players.erase(id)
+	if get_node('/root/World/Spawn').has_node(str(id)):
+		get_node('/root/World/Spawn').get_node(str(id)).call_deferred('queue_free')
 
 # Notifies this client when another player connects to the same server. 
 # This also gets called for the server, but we don't do much with that. 
@@ -91,7 +94,6 @@ remote func create_player(player_id, data):
 	players[player_id] = data
 	var new_player = load('res://Scenes/Warthog.tscn').instance()
 	new_player.name = str(player_id)
-	print('create_player: ', str(player_id))
 	new_player.set_network_master(player_id) # Tell this puppet player that it's being controlled by some other peer.
 	get_node('/root/World/Spawn').add_child(new_player)
 
@@ -108,6 +110,5 @@ remote func create_ball(ball_id):
 	var ball = preload('res://Scenes/Ball.tscn').instance()
 	ball.set_network_master(SERVER_ID)
 	ball.name = 'McBall'
-	print('created ball clientside with ballid ', str(ball_id))
 #	ball.mode = RigidBody.MODE_STATIC
 	ball_spawn.add_child(ball)
